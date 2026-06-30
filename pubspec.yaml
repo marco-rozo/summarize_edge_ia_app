@@ -40,6 +40,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   dartz: ^0.10.1
   logger: ^2.7.0
+  equatable: ^2.0.8
 
 dev_dependencies:
   flutter_test:

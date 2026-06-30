@@ -101,4 +101,42 @@ final class AppTextStyle {
     fontWeight: FontWeight.w400,
     color: AppColors.textDarkPrimary,
   );
+
+  // Chat
+  static const TextStyle chatMessageUser = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textDarkPrimary,
+    height: 1.5,
+  );
+
+  static const TextStyle chatMessageAssistant = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textLightPrimary,
+    height: 1.5,
+  );
+
+  static const TextStyle chatTimestamp = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textLightTertiary,
+  );
+
+  static const TextStyle chatInputHint = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textLightTertiary,
+  );
+
+  static const TextStyle chatEmptyState = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textLightSecondary,
+  );
 }
