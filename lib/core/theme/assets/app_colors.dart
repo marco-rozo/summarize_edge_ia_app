@@ -1,42 +1,90 @@
 import 'package:flutter/material.dart';
 
+/// Color palette for the "Edge Neural" design system.
+/// Anchored in deep obsidian neutrals with vibrant neon accents.
 final class AppColors {
   AppColors._();
 
-  // Primary — base: #3D348B (HSL 246°, 46%, 38%)
-  static const Color primary = Color(0xFF3D348B);
-  static const Color primaryLight = Color(0xFF6259B3); // HSL 246°, 42%, 54%
-  static const Color primaryDark = Color(0xFF241D62);  // HSL 246°, 51%, 24%
+  // ── Primary — "Purple LED" #A855F7 ──────────────────────────────────────
+  static const Color primary = Color(0xFFA855F7);
+  static const Color primaryLight = Color(0xFFDDB7FF);  // M3 primary-fixed-dim
+  static const Color primaryDark = Color(0xFF6900B3);   // M3 on-primary-fixed-variant
+  static const Color primaryContainer = Color(0xFFB76DFF);
 
-  // Secondary — base: #7678ED (HSL 239°, 79%, 63%)
-  static const Color secondary = Color(0xFF7678ED);
-  static const Color secondaryLight = Color(0xFFA3A4F4); // HSL 239°, 84%, 79%
-  static const Color secondaryDark = Color(0xFF4D50C8);  // HSL 239°, 57%, 49%
+  // ── Secondary — Soft violet #C084FC ─────────────────────────────────────
+  static const Color secondary = Color(0xFFC084FC);
+  static const Color secondaryLight = Color(0xFFDDB8FF); // M3 secondary-fixed-dim
+  static const Color secondaryDark = Color(0xFF62259B);  // M3 secondary-container
 
-  // Background
-  static const Color backgroundLightPrimary = Color(0xFFFFFFFF);
-  static const Color backgroundLightSecondary = Color(0xFFF6F6F6);
-  static const Color backgroundLightTertiary = Color(0xFFEDEDED);
+  // ── Tertiary — "Cyber Blue" #22D3EE ─────────────────────────────────────
+  static const Color tertiary = Color(0xFF22D3EE);
+  static const Color tertiaryContainer = Color(0xFF009FB4);
 
-  // Text
-  static const Color textLightPrimary = Color(0xFF2B2B2B);
-  static const Color textLightSecondary = Color(0xFF787878);
-  static const Color textLightTertiary = Color(0xFFABABAB);
-  static const Color textDarkPrimary = Color(0xFFFFFFFF);
+  // ── Backgrounds / Surfaces ───────────────────────────────────────────────
+  /// Void / base layer — #0B0B0B (Pitch)
+  static const Color backgroundBase = Color(0xFF0B0B0B);
 
-  // Borders
-  static const Color borderLight = Color(0xFFC7C7C7);
-  static const Color borderDivider = Color(0xFFE6E0E9);
+  /// Carbon — elevated cards & containers — #121212
+  static const Color surface = Color(0xFF121212);
 
-  // States
-  static const Color negative = Color(0xFFE11900);
-  static const Color positive = Color(0xFF05944F);
+  /// Slightly brighter surface for modals / panels
+  static const Color surfaceContainer = Color(0xFF201F1F);
+  static const Color surfaceContainerHigh = Color(0xFF2A2A2A);
+  static const Color surfaceContainerHighest = Color(0xFF353534);
+
+  /// Glass overlay tint for bottom-sheets / sidebars
+  static const Color glassOverlay = Color(0xB20B0B0B); // rgba(11,11,11,0.7)
+
+  // ── On-Surface Text ──────────────────────────────────────────────────────
+  /// Primary text on dark surfaces — #E5E2E1
+  static const Color onSurface = Color(0xFFE5E2E1);
+
+  /// Secondary / muted text — #CFC2D6
+  static const Color onSurfaceVariant = Color(0xFFCFC2D6);
+
+  // ── Borders / Outlines ───────────────────────────────────────────────────
+  static const Color outline = Color(0xFF988D9F);
+  static const Color outlineVariant = Color(0xFF4D4354);
+
+  /// Subtle 1px border for surfaces — rgba(255,255,255,0.05)
+  static const Color surfaceBorder = Color(0x0DFFFFFF);
+
+  /// Ghost-button border — rgba(168,85,247,0.4)
+  static const Color ghostBorder = Color(0x66A855F7);
+
+  // ── Drag handle / Misc ───────────────────────────────────────────────────
+  static const Color dragHandle = Color(0xFF988D9F);
+
+  // ── States ───────────────────────────────────────────────────────────────
+  static const Color negative = Color(0xFFFFB4AB);       // M3 error
+  static const Color negativeContainer = Color(0xFF93000A);
+  static const Color positive = Color(0xFF22D3EE);        // reuse cyber-blue for "ready"
   static const Color warning = Color(0xFFD2761B);
-  static const Color disabled = Color(0xFFD9D9D9);
+  static const Color disabled = Color(0xFF4D4354);        // dim outline-variant
 
-  // Misc
-  static const Color dragHandle = Color(0xFF79747E);
+  // ── Status LED ───────────────────────────────────────────────────────────
+  /// Pulsing purple — AI processing
+  static const Color ledProcessing = Color(0xFFA855F7);
+
+  /// Solid cyan — Model ready
+  static const Color ledReady = Color(0xFF22D3EE);
+
+  /// Dim gray — Offline / not available
+  static const Color ledOffline = Color(0xFF4D4354);
+
+  // ── Neutral constants ────────────────────────────────────────────────────
   static const Color transparent = Colors.transparent;
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
+
+  // ── Legacy aliases (keep for backward compat) ────────────────────────────
+  static const Color backgroundLightPrimary = backgroundBase;
+  static const Color backgroundLightSecondary = surface;
+  static const Color backgroundLightTertiary = surfaceContainer;
+  static const Color textLightPrimary = onSurface;
+  static const Color textLightSecondary = onSurfaceVariant;
+  static const Color textLightTertiary = outline;
+  static const Color textDarkPrimary = onSurface;
+  static const Color borderLight = outlineVariant;
+  static const Color borderDivider = outlineVariant;
 }

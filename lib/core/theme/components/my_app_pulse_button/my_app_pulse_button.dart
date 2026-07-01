@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 
+/// Edge Neural pulse/LED button.
+///
+/// States (controlled by [isActive]):
+///   • **Active** — pulsing purple rings + full glow.  Represents AI processing.
+///   • **Inactive** — static, dimmer button; same gradient but lower saturation.
+///
+/// The component also exposes a [ledColor] parameter so callers can override
+/// the center dot color (e.g. use [AppColors.ledReady] for "model downloaded").
 class MyAppPulseButton extends StatefulWidget {
   final IconData icon;
   final bool isActive;
   final VoidCallback onPressed;
   final double sizeRatio;
+
+  /// Overrides the icon/LED color. Defaults to white.
+  final Color? ledColor;
 
   const MyAppPulseButton({
     super.key,
@@ -13,6 +24,7 @@ class MyAppPulseButton extends StatefulWidget {
     required this.isActive,
     required this.onPressed,
     this.sizeRatio = 0.4,
+    this.ledColor,
   });
 
   @override
@@ -75,44 +87,44 @@ class _MyAppPulseButtonState extends State<MyAppPulseButton>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Pulse ring 1 (outer)
+            // ── Outer pulse ring ──────────────────────────────────────────
             if (widget.isActive)
               AnimatedBuilder(
                 animation: _pulseController,
-                builder: (_, _) => Container(
+                builder: (context, child) => Container(
                   width: buttonSize * _pulseAnimation.value,
                   height: buttonSize * _pulseAnimation.value,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.primary
+                      color: AppColors.ledProcessing
                           .withValues(alpha: _opacityAnimation.value * 0.5),
-                      width: 3,
+                      width: 2,
                     ),
                   ),
                 ),
               ),
-            // Pulse ring 2 (mid)
+            // ── Mid pulse fill ────────────────────────────────────────────
             if (widget.isActive)
               AnimatedBuilder(
                 animation: _pulseController,
-                builder: (_, _) => Container(
-                  width: buttonSize * (_pulseAnimation.value * 0.92),
-                  height: buttonSize * (_pulseAnimation.value * 0.92),
+                builder: (context, child) => Container(
+                  width: buttonSize * (_pulseAnimation.value * 0.85),
+                  height: buttonSize * (_pulseAnimation.value * 0.85),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.secondary
-                        .withValues(alpha: _opacityAnimation.value * 0.15),
+                    color: AppColors.primary
+                        .withValues(alpha: _opacityAnimation.value * 0.12),
                   ),
                 ),
               ),
-            // Main button
+            // ── Main button ───────────────────────────────────────────────
             Material(
               color: Colors.transparent,
               child: InkWell(
                 onTap: widget.onPressed,
                 borderRadius: BorderRadius.circular(buttonSize / 2),
-                splashColor: AppColors.secondaryLight.withValues(alpha: 0.3),
+                splashColor: AppColors.primaryContainer.withValues(alpha: 0.25),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
@@ -125,27 +137,28 @@ class _MyAppPulseButtonState extends State<MyAppPulseButton>
                       end: Alignment.bottomRight,
                       colors: widget.isActive
                           ? [
-                              AppColors.primary,
-                              AppColors.secondary,
+                              AppColors.primary,          // #A855F7
+                              AppColors.secondaryDark,    // #62259B
                             ]
                           : [
-                              AppColors.primaryLight,
-                              AppColors.secondaryLight,
+                              AppColors.surfaceContainerHigh,  // inactive — dim
+                              AppColors.surfaceContainer,
                             ],
                     ),
+                    // LED glow — 8px blur, 0.3 opacity per spec
                     boxShadow: [
                       BoxShadow(
                         color: widget.isActive
-                            ? AppColors.primary.withValues(alpha: 0.4)
-                            : AppColors.primaryLight.withValues(alpha: 0.25),
-                        blurRadius: widget.isActive ? 24 : 12,
-                        spreadRadius: widget.isActive ? 2 : 0,
+                            ? AppColors.primary.withValues(alpha: 0.30)
+                            : AppColors.outline.withValues(alpha: 0.15),
+                        blurRadius: widget.isActive ? 8 : 4,
+                        spreadRadius: widget.isActive ? 1 : 0,
                       ),
                     ],
                   ),
                   child: Icon(
                     widget.icon,
-                    color: AppColors.white,
+                    color: widget.ledColor ?? AppColors.white,
                     size: buttonSize * 0.4,
                   ),
                 ),

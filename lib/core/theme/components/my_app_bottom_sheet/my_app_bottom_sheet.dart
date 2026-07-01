@@ -1,8 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 
+/// Edge Neural glassmorphism bottom sheet helper.
+///
+/// The blurred variant uses a **20px backdrop blur** + semi-transparent
+/// dark tint `rgba(11,11,11,0.7)` over a `#201F1F` container with a
+/// 1px top border — matching the design's "Glassmorphism" layer spec.
 mixin MyAppBottomSheet {
   Future<void> showMyAppBlurredBottomSheet(
     BuildContext context, {
@@ -15,6 +19,7 @@ mixin MyAppBottomSheet {
         context: context,
         isScrollControlled: isScrollControlled,
         backgroundColor: Colors.transparent,
+        barrierColor: AppColors.black.withValues(alpha: 0.5),
         builder: (context) => BackdropFilter(
           filter: ImageFilter.blur(sigmaX: blurIntensity, sigmaY: blurIntensity),
           child: Column(
@@ -22,38 +27,39 @@ mixin MyAppBottomSheet {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
+                  horizontal: 24,
                   vertical: 24,
                 ),
                 decoration: const BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: AppColors.backgroundLightSecondary,
+                  // Dark glass tint
+                  color: AppColors.glassOverlay,
                   borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(28.0),
+                    top: Radius.circular(12),
+                  ),
+                  border: Border(
+                    top: BorderSide(color: AppColors.surfaceBorder, width: 1),
+                    left: BorderSide(color: AppColors.surfaceBorder, width: 1),
+                    right: BorderSide(color: AppColors.surfaceBorder, width: 1),
                   ),
                 ),
                 width: double.infinity,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Visibility(
-                      visible: showDragHandle,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 32,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: AppColors.dragHandle,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
+                    if (showDragHandle)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Center(
+                          child: Container(
+                            width: 32,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: AppColors.dragHandle,
+                              borderRadius: BorderRadius.circular(2),
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
                     child,
                   ],
                 ),
@@ -63,14 +69,14 @@ mixin MyAppBottomSheet {
         ),
       );
 
-  Future showMyAppBottomSheet({
+  Future<dynamic> showMyAppBottomSheet({
     required BuildContext context,
     required Widget child,
     bool isScrollControlled = true,
     bool isDismissible = true,
     bool showDragHandle = true,
     bool enableDrag = true,
-    double elevation = 1,
+    double elevation = 0,
     Color? barrierColor,
     double initialChildSize = 0.5,
   }) =>
@@ -80,13 +86,13 @@ mixin MyAppBottomSheet {
         enableDrag: enableDrag,
         elevation: elevation,
         useSafeArea: true,
-        barrierColor: barrierColor,
+        barrierColor: barrierColor ?? AppColors.black.withValues(alpha: 0.5),
         isScrollControlled: isScrollControlled,
-        backgroundColor: AppColors.backgroundLightSecondary,
+        // Surface container with 1px border
+        backgroundColor: AppColors.surfaceContainer,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(28.0),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+          side: BorderSide(color: AppColors.surfaceBorder, width: 1),
         ),
         context: context,
         builder: (context) => DraggableScrollableSheet(
@@ -99,7 +105,7 @@ mixin MyAppBottomSheet {
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
+                  horizontal: 24,
                   vertical: 24,
                 ),
                 child: child,

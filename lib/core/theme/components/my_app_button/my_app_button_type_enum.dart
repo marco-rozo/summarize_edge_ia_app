@@ -2,27 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 
+/// Button variant tokens for the "Edge Neural" design system.
+///
+/// - **primary** — solid Purple LED (#A855F7) with black text + glow.
+/// - **secondary / ghost** — transparent with a 1px purple-tinted border.
+/// - **negative** — error/destructive action.
 enum MyAppButtonTypeEnum {
   primary(
-    backgroundColor: AppColors.primaryLight,
-    borderColor: AppColors.primaryLight,
-    progressIndicatorColor: AppColors.backgroundLightPrimary,
+    backgroundColor: AppColors.primary,
+    borderColor: AppColors.primary,
+    progressIndicatorColor: AppColors.black,
     textStyle: AppTextStyle.primaryButtonText,
     disabledColor: AppColors.disabled,
-    splashColor: AppColors.primary,
+    splashColor: AppColors.primaryContainer,
   ),
   secondary(
-    backgroundColor: AppColors.backgroundLightPrimary,
-    borderColor: AppColors.borderLight,
+    // Ghost: transparent bg + subtle purple border
+    backgroundColor: AppColors.transparent,
+    borderColor: AppColors.ghostBorder,
     progressIndicatorColor: AppColors.primary,
     textStyle: AppTextStyle.secondaryButtonText,
     disabledColor: AppColors.disabled,
-    splashColor: AppColors.backgroundLightSecondary,
+    splashColor: AppColors.surfaceContainerHigh,
   ),
   negative(
-    backgroundColor: AppColors.negative,
-    borderColor: AppColors.negative,
-    progressIndicatorColor: AppColors.backgroundLightPrimary,
+    backgroundColor: AppColors.negativeContainer,
+    borderColor: AppColors.negativeContainer,
+    progressIndicatorColor: AppColors.onSurface,
     textStyle: AppTextStyle.primaryButtonText,
     disabledColor: AppColors.disabled,
     splashColor: AppColors.negative,
