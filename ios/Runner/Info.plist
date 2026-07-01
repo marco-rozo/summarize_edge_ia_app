@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Este app precisa acessar o microfone para reconhecimento de voz.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Este app utiliza reconhecimento de fala para converter áudio em texto.</string>
 </dict>
 </plist>

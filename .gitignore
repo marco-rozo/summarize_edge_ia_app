@@ -45,3 +45,8 @@ app.*.map.json
 /android/app/release
 
 .agents/
+
+# Firebase configuration files (prevent API key leaks on GitHub)
+**/google-services.json
+**/GoogleService-Info.plist
+firebase_app_id_file.json

@@ -40,6 +40,12 @@ dependencies:
   flutter_bloc: ^9.1.1
   dartz: ^0.10.1
   logger: ^2.7.0
+  firebase_storage: ^13.4.3
+  firebase_core: ^4.11.0
+  cloud_firestore: ^6.6.0
+  equatable: ^2.0.7
+  permission_handler: ^11.4.0
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:

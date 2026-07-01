@@ -15,7 +15,11 @@
                 "--flavor",
                 "dev",
                 "--dart-define",
-                "APP_TITLE=Summary App (Dev)"
+                "APP_TITLE=Summary App (Dev)",
+                "--dart-define",
+                "FIREBASE_ANDROID_API_KEY=${env:FIREBASE_ANDROID_API_KEY}",
+                "--dart-define",
+                "FIREBASE_IOS_API_KEY=${env:FIREBASE_IOS_API_KEY}"
             ]
         },
         {
@@ -29,7 +33,11 @@
                 "--flavor",
                 "prod",
                 "--dart-define",
-                "APP_TITLE=Summary App"
+                "APP_TITLE=Summary App",
+                "--dart-define",
+                "FIREBASE_ANDROID_API_KEY=${env:FIREBASE_ANDROID_API_KEY}",
+                "--dart-define",
+                "FIREBASE_IOS_API_KEY=${env:FIREBASE_IOS_API_KEY}"
             ]
         }
     ]

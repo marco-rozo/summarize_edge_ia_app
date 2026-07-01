@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:summary_app/core/theme/components/my_app_button/my_app_button.dart';
+import 'package:summary_app/modules/listening/core/routes/listening_routes.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -9,6 +10,7 @@ final GoRouter appRouter = GoRouter(
       path: '/',
       builder: (context, state) => const _HomePage(),
     ),
+    ...ListeningRoutes.routes,
   ],
 );
 
@@ -37,6 +39,12 @@ class _HomePage extends StatelessWidget {
             MyAppButton.negative(
               text: 'Botão Negativo',
               onPressed: () {},
+            ),
+            const SizedBox(height: 32),
+            MyAppButton.primary(
+              text: 'Reconhecimento de Voz',
+              leftIcon: Icons.mic_rounded,
+              onPressed: () => context.push(ListeningRoutes.path),
             ),
           ],
         ),
