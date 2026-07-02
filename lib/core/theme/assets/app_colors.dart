@@ -29,6 +29,7 @@ final class AppColors {
 
   /// Slightly brighter surface for modals / panels
   static const Color surfaceContainer = Color(0xFF201F1F);
+  static const Color surfaceContainerLow = Color(0xFF1C1B1B);
   static const Color surfaceContainerHigh = Color(0xFF2A2A2A);
   static const Color surfaceContainerHighest = Color(0xFF353534);
 

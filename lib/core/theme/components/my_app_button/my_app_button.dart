@@ -41,6 +41,17 @@ class MyAppButton extends StatefulWidget {
     this.isLoading = false,
   }) : buttonType = MyAppButtonTypeEnum.secondary;
 
+  const MyAppButton.tertiary({
+    super.key,
+    this.leftWidget,
+    this.leftIcon,
+    this.rightIcon,
+    required this.text,
+    this.onPressed,
+    this.width = double.infinity,
+    this.isLoading = false,
+  }) : buttonType = MyAppButtonTypeEnum.tertiary;
+
   const MyAppButton.negative({
     super.key,
     this.leftWidget,
@@ -78,13 +89,16 @@ class _MyAppButtonState extends State<MyAppButton> {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgColor =
-        _isDisabled ? widget.buttonType.disabledColor : widget.buttonType.backgroundColor;
-    final Color borderColor =
-        _isDisabled ? widget.buttonType.disabledColor : widget.buttonType.borderColor;
+    final Color bgColor = _isDisabled
+        ? widget.buttonType.disabledColor
+        : widget.buttonType.backgroundColor;
+    final Color borderColor = _isDisabled
+        ? widget.buttonType.disabledColor
+        : widget.buttonType.borderColor;
 
     // Ghost hover: increase border opacity slightly
-    final Color resolvedBorder = (!_isDisabled &&
+    final Color resolvedBorder =
+        (!_isDisabled &&
             _hovered &&
             widget.buttonType == MyAppButtonTypeEnum.secondary)
         ? AppColors.primary.withValues(alpha: 0.65)
@@ -96,20 +110,24 @@ class _MyAppButtonState extends State<MyAppButton> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         curve: Curves.easeOut,
-        height: 48,
+        height: 50,
         width: widget.width,
         decoration: BoxDecoration(
           color: bgColor,
           border: Border.all(color: resolvedBorder, width: 1),
-          borderRadius: BorderRadius.circular(4), // 0.25rem — standard buttons
+          borderRadius: BorderRadius.circular(12), // 0.25rem — standard buttons
           boxShadow: _boxShadow,
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            splashColor: _isDisabled ? AppColors.transparent : widget.buttonType.splashColor.withValues(alpha: 0.15),
-            highlightColor: _isDisabled ? AppColors.transparent : widget.buttonType.splashColor.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(4),
+            splashColor: _isDisabled
+                ? AppColors.transparent
+                : widget.buttonType.splashColor.withValues(alpha: 0.15),
+            highlightColor: _isDisabled
+                ? AppColors.transparent
+                : widget.buttonType.splashColor.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(12),
             onTap: widget.isLoading ? null : widget.onPressed,
             child: widget.isLoading
                 ? Row(
@@ -132,7 +150,11 @@ class _MyAppButtonState extends State<MyAppButton> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (widget.leftWidget != null) ...[
-                        SizedBox(height: 20, width: 20, child: widget.leftWidget!),
+                        SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: widget.leftWidget!,
+                        ),
                         const SizedBox(width: 8),
                       ],
                       if (widget.leftIcon != null) ...[

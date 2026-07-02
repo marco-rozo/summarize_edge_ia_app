@@ -25,6 +25,14 @@ enum MyAppButtonTypeEnum {
     disabledColor: AppColors.disabled,
     splashColor: AppColors.surfaceContainerHigh,
   ),
+  tertiary(
+    backgroundColor: AppColors.transparent,
+    borderColor: AppColors.borderLight,
+    progressIndicatorColor: AppColors.primary,
+    textStyle: AppTextStyle.tertiaryButtonText,
+    disabledColor: AppColors.disabled,
+    splashColor: AppColors.surfaceContainerHigh,
+  ),
   negative(
     backgroundColor: AppColors.negativeContainer,
     borderColor: AppColors.negativeContainer,

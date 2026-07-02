@@ -21,7 +21,7 @@ final class AppTextStyle {
     fontSize: 40,
     fontWeight: FontWeight.w700,
     color: AppColors.onSurface,
-    height: 1.2,         // 48px / 40px
+    height: 1.2, // 48px / 40px
     letterSpacing: -0.8, // -0.02em × 40px
   );
 
@@ -105,6 +105,14 @@ final class AppTextStyle {
     letterSpacing: 0.3,
   );
 
+  static const TextStyle tertiaryButtonText = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.primaryLight,
+    letterSpacing: 0.3,
+  );
+
   static const TextStyle disabledButtonText = TextStyle(
     fontFamily: fontFamily,
     fontSize: 14,
@@ -125,33 +133,48 @@ final class AppTextStyle {
 
   // ── Legacy aliases (backward compat) ─────────────────────────────────────
   static const TextStyle headline10 = TextStyle(
-    fontFamily: fontFamily, fontSize: 10, fontWeight: FontWeight.w500,
+    fontFamily: fontFamily,
+    fontSize: 10,
+    fontWeight: FontWeight.w500,
     color: AppColors.onSurface,
   );
   static const TextStyle headline12 = TextStyle(
-    fontFamily: fontFamily, fontSize: 12, fontWeight: FontWeight.w500,
+    fontFamily: fontFamily,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
     color: AppColors.onSurface,
   );
   static const TextStyle headline16 = TextStyle(
-    fontFamily: fontFamily, fontSize: 16, fontWeight: FontWeight.w500,
+    fontFamily: fontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
     color: AppColors.onSurface,
   );
   static const TextStyle headline20 = TextStyle(
-    fontFamily: fontFamily, fontSize: 20, fontWeight: FontWeight.w600,
+    fontFamily: fontFamily,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
     color: AppColors.onSurface,
   );
   static const TextStyle headline30 = headlineLgMobile;
 
   static const TextStyle body12 = TextStyle(
-    fontFamily: bodyFontFamily, fontSize: 12, fontWeight: FontWeight.w400,
+    fontFamily: bodyFontFamily,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
     color: AppColors.onSurfaceVariant,
   );
   static const TextStyle body14Primary = TextStyle(
-    fontFamily: bodyFontFamily, fontSize: 14, fontWeight: FontWeight.w400,
-    color: AppColors.onSurface, height: 1.75,
+    fontFamily: bodyFontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.onSurface,
+    height: 1.75,
   );
   static const TextStyle body14Secondary = TextStyle(
-    fontFamily: bodyFontFamily, fontSize: 14, fontWeight: FontWeight.w400,
+    fontFamily: bodyFontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
     color: AppColors.onSurfaceVariant,
   );
   static const TextStyle body16 = bodyMd;
