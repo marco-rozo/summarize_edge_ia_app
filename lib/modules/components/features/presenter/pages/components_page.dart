@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/components/summary_app_bottom_sheet/summary_app_bottom_sheet.dart';
 import 'package:summary_app/core/theme/components/summary_app_button/summary_app_button.dart';
 import 'package:summary_app/core/theme/components/summary_app_text_button/summary_app_text_button.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
+import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase.dart';
 import 'package:summary_app/modules/components/core/routes/components_routes.dart';
+import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
 
 class ComponentsPage extends StatefulWidget {
   const ComponentsPage({super.key});
@@ -17,6 +20,45 @@ class ComponentsPage extends StatefulWidget {
 class _ComponentsPageState extends State<ComponentsPage>
     with SummaryAppBottomSheet {
   final _whiteLine = const SizedBox(height: 8);
+  bool _isDownloading = false;
+
+  Future<void> _downloadAiModel() async {
+    setState(() {
+      _isDownloading = true;
+    });
+
+    const url =
+        'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2FQwen3-0.6B.litertlm?alt=media&token=e9a427dc-6836-4aac-8464-6a2782f74341';
+    const fileName = 'Qwen3-0.6B.litertlm';
+
+    final usecase = context.read<DownloadAiModelUsecase>();
+    final result = await usecase(url: url, fileName: fileName);
+
+    if (!mounted) return;
+
+    setState(() {
+      _isDownloading = false;
+    });
+
+    result.fold(
+      (failure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(failure.userMessage),
+            backgroundColor: AppColors.negative,
+          ),
+        );
+      },
+      (path) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Modelo salvo com sucesso em:\n$path'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      },
+    );
+  }
 
   void _showBlurredBottomSheet() {
     showSummaryAppBlurredBottomSheet(
@@ -187,6 +229,21 @@ class _ComponentsPageState extends State<ComponentsPage>
               leftIcon: Icons.route_rounded,
               onPressed: () =>
                   context.push(ComponentsRoutes.backgroundTestPath),
+            ),
+            _buildSectionTitle('Download Modelo IA (Qwen3-0.6B)'),
+            SummaryAppButton.primary(
+              text: _isDownloading
+                  ? 'Baixando Modelo IA...'
+                  : 'Baixar Qwen3-0.6B (LiteRT)',
+              leftIcon: Icons.cloud_download_rounded,
+              isLoading: _isDownloading,
+              onPressed: _isDownloading ? null : _downloadAiModel,
+            ),
+            _buildSectionTitle('Módulos & Fluxos do App'),
+            SummaryAppButton.secondary(
+              text: 'Ir para Onboarding',
+              leftIcon: Icons.explore_rounded,
+              onPressed: () => context.push(OnboardingRoutes.path),
             ),
           ],
         ),

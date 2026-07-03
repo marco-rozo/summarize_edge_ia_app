@@ -4,7 +4,7 @@ import 'package:summary_app/modules/listening/core/routes/listening_routes.dart'
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: OnboardingRoutes.path,
+  initialLocation: ComponentsRoutes.path,
   routes: [
     ...ComponentsRoutes.routes,
     ...ListeningRoutes.routes,
