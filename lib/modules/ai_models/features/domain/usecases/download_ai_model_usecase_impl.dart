@@ -18,6 +18,7 @@ class DownloadAiModelUsecaseImpl implements DownloadAiModelUsecase {
   Future<Output<String>> call({
     required String url,
     required String fileName,
+    void Function(int received, int total)? onProgress,
   }) async {
     try {
       final directory = await getApplicationSupportDirectory();
@@ -28,7 +29,11 @@ class DownloadAiModelUsecaseImpl implements DownloadAiModelUsecase {
         await file.parent.create(recursive: true);
       }
 
-      return await _repository.downloadModel(url: url, filePath: filePath);
+      return await _repository.downloadModel(
+        url: url,
+        filePath: filePath,
+        onProgress: onProgress,
+      );
     } catch (e, stackTrace) {
       return Left(
         DownloadModelFailure(

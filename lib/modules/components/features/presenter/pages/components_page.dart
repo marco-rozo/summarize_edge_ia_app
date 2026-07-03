@@ -10,6 +10,7 @@ import 'package:summary_app/core/theme/components/summary_app_text_button/summar
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 import 'package:summary_app/modules/ai_models/features/data/models/ai_model_model.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase.dart';
+import 'package:summary_app/modules/ai_models/core/routes/ai_models_routes.dart';
 import 'package:summary_app/modules/components/core/routes/components_routes.dart';
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
 
@@ -25,9 +26,9 @@ class _ComponentsPageState extends State<ComponentsPage>
   @override
   void initState() {
     super.initState();
-    popularModelosNoFirestore();
   }
 
+  // TODO REMOVER APÓS SALVAR REALMENTE
   Future<void> popularModelosNoFirestore() async {
     final firestore = FirebaseFirestore.instance;
     final collection = firestore.collection('ai_models');
@@ -157,8 +158,12 @@ class _ComponentsPageState extends State<ComponentsPage>
     final Logger logger = Logger();
 
     for (var modelo in aiModelsToRegister) {
-      await collection.add(modelo.toMap());
-      logger.i('✅ Modelo ${modelo.name} cadastrado com sucesso!');
+      try {
+        await collection.add(modelo.toMap());
+        logger.i('✅ Modelo ${modelo.name} cadastrado com sucesso!');
+      } catch (e) {
+        logger.e(e);
+      }
     }
 
     logger.i('🚀 Todos os modelos foram cadastrados no Firestore!');
@@ -389,6 +394,12 @@ class _ComponentsPageState extends State<ComponentsPage>
               text: 'Ir para Onboarding',
               leftIcon: Icons.explore_rounded,
               onPressed: () => context.push(OnboardingRoutes.path),
+            ),
+            _whiteLine,
+            SummaryAppButton.secondary(
+              text: 'Ir para Modelos de IA',
+              leftIcon: Icons.psychology_rounded,
+              onPressed: () => context.push(AiModelsRoutes.path),
             ),
           ],
         ),

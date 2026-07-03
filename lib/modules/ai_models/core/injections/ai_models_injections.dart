@@ -6,6 +6,8 @@ import 'package:summary_app/modules/ai_models/features/data/repositories/ai_mode
 import 'package:summary_app/modules/ai_models/features/domain/repositories/ai_model_repository.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase_impl.dart';
+import 'package:summary_app/modules/ai_models/features/domain/usecases/get_all_ai_models_usecase.dart';
+import 'package:summary_app/modules/ai_models/features/domain/usecases/get_all_ai_models_usecase_impl.dart';
 
 /// Centraliza os provedores de injeção de dependência do módulo [ai_models].
 /// Segue o padrão arquitetural utilizando [RepositoryProvider] do flutter_bloc.
@@ -21,6 +23,11 @@ final class AiModelsInjections {
         ),
         RepositoryProvider<DownloadAiModelUsecase>(
           create: (context) => DownloadAiModelUsecaseImpl(
+            repository: context.read<AiModelRepository>(),
+          ),
+        ),
+        RepositoryProvider<GetAllAiModelsUsecase>(
+          create: (context) => GetAllAiModelsUsecaseImpl(
             repository: context.read<AiModelRepository>(),
           ),
         ),
