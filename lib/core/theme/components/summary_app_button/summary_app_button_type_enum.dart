@@ -2,22 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 
-/// Button variant tokens for the "Edge Neural" design system.
-///
-/// - **primary** — solid Purple LED (#A855F7) with black text + glow.
-/// - **secondary / ghost** — transparent with a 1px purple-tinted border.
-/// - **negative** — error/destructive action.
-enum MyAppButtonTypeEnum {
+enum SummaryAppButtonTypeEnum {
   primary(
     backgroundColor: AppColors.primary,
     borderColor: AppColors.primary,
     progressIndicatorColor: AppColors.black,
     textStyle: AppTextStyle.primaryButtonText,
     disabledColor: AppColors.disabled,
-    splashColor: AppColors.primaryContainer,
+    splashColor: AppColors.primaryLight,
   ),
   secondary(
-    // Ghost: transparent bg + subtle purple border
     backgroundColor: AppColors.transparent,
     borderColor: AppColors.ghostBorder,
     progressIndicatorColor: AppColors.primary,
@@ -25,7 +19,15 @@ enum MyAppButtonTypeEnum {
     disabledColor: AppColors.disabled,
     splashColor: AppColors.surfaceContainerHigh,
   ),
-  tertiary(
+  tertiaryFill(
+    backgroundColor: AppColors.primaryLight,
+    borderColor: AppColors.primaryLight,
+    progressIndicatorColor: AppColors.black,
+    textStyle: AppTextStyle.primaryButtonText,
+    disabledColor: AppColors.disabled,
+    splashColor: AppColors.surfaceContainerHigh,
+  ),
+  tertiaryBorder(
     backgroundColor: AppColors.transparent,
     borderColor: AppColors.borderLight,
     progressIndicatorColor: AppColors.primary,
@@ -36,7 +38,7 @@ enum MyAppButtonTypeEnum {
   negative(
     backgroundColor: AppColors.negativeContainer,
     borderColor: AppColors.negativeContainer,
-    progressIndicatorColor: AppColors.onSurface,
+    progressIndicatorColor: Color.fromARGB(255, 53, 50, 49),
     textStyle: AppTextStyle.primaryButtonText,
     disabledColor: AppColors.disabled,
     splashColor: AppColors.negative,
@@ -49,7 +51,7 @@ enum MyAppButtonTypeEnum {
   final TextStyle textStyle;
   final Color splashColor;
 
-  const MyAppButtonTypeEnum({
+  const SummaryAppButtonTypeEnum({
     required this.backgroundColor,
     required this.borderColor,
     required this.progressIndicatorColor,

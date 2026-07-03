@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:summary_app/core/theme/components/my_app_button/my_app_button.dart';
-import 'package:summary_app/core/theme/components/my_app_text_button/my_app_text_button.dart';
+import 'package:summary_app/core/theme/components/summary_app_button/summary_app_button.dart';
+import 'package:summary_app/core/theme/components/summary_app_text_button/summary_app_text_button.dart';
 
 class OnboardingBottomActions extends StatelessWidget {
   const OnboardingBottomActions({
@@ -52,10 +52,10 @@ class OnboardingBottomActions extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        MyAppTextButton(text: 'Pular', onPressed: onSkip),
+        SummaryAppTextButton(text: 'Pular', onPressed: onSkip),
         SizedBox(
           width: 145,
-          child: MyAppButton.tertiary(
+          child: SummaryAppButton.tertiaryBorder(
             text: 'Próximo',
             onPressed: onNext,
             rightIcon: Icons.arrow_forward_rounded,
@@ -66,7 +66,7 @@ class OnboardingBottomActions extends StatelessWidget {
   }
 
   Widget _buildFinishButton() {
-    return MyAppButton.primary(
+    return SummaryAppButton.primary(
       text: 'Começar agora',
       onPressed: onCompleted,
       rightIcon: Icons.arrow_forward_rounded,

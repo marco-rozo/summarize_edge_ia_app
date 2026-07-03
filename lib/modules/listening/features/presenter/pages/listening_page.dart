@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
-import 'package:summary_app/core/theme/components/my_app_pulse_button/my_app_pulse_button.dart';
+import 'package:summary_app/core/theme/components/summary_app_pulse_button/summary_app_pulse_button.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 import 'package:summary_app/modules/listening/features/presenter/cubits/listening_cubit.dart';
 import 'package:summary_app/modules/listening/features/presenter/widgets/recognized_text_widget.dart';
 
-// Componentizar e ajustar tratamento de estados dessa tela
 class ListeningPage extends StatefulWidget {
   const ListeningPage({super.key});
 
@@ -81,7 +80,6 @@ class _ListeningPageState extends State<ListeningPage> {
 
           return Column(
             children: [
-              // Status indicator
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 padding: const EdgeInsets.symmetric(
@@ -118,12 +116,10 @@ class _ListeningPageState extends State<ListeningPage> {
                   ],
                 ),
               ),
-
-              // Pulse Button area
               Expanded(
                 flex: 3,
                 child: Center(
-                  child: MyAppPulseButton(
+                  child: SummaryAppPulseButton(
                     icon: isListening ? Icons.stop_rounded : Icons.mic_rounded,
                     isActive: isListening,
                     onPressed: () => _listeningCubit.toggleListening(),
@@ -131,8 +127,6 @@ class _ListeningPageState extends State<ListeningPage> {
                   ),
                 ),
               ),
-
-              // Recognized text area
               Expanded(
                 flex: 4,
                 child: Container(

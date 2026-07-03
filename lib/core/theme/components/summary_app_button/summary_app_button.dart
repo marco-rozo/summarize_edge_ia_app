@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
-import 'package:summary_app/core/theme/components/my_app_button/my_app_button_type_enum.dart';
+import 'package:summary_app/core/theme/components/summary_app_button/summary_app_button_type_enum.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 
-/// Edge Neural button.
-///
-/// Variants (use named constructors):
-///   `MyAppButton.primary`  — solid Purple LED with glow on hover.
-///   `MyAppButton.secondary` / `.ghost` — transparent + purple border.
-///   `MyAppButton.negative` — destructive / error action.
-class MyAppButton extends StatefulWidget {
-  final MyAppButtonTypeEnum buttonType;
+class SummaryAppButton extends StatefulWidget {
+  final SummaryAppButtonTypeEnum buttonType;
   final Widget? leftWidget;
   final IconData? leftIcon;
   final IconData? rightIcon;
@@ -19,7 +13,7 @@ class MyAppButton extends StatefulWidget {
   final double width;
   final bool isLoading;
 
-  const MyAppButton.primary({
+  const SummaryAppButton.primary({
     super.key,
     this.leftWidget,
     this.leftIcon,
@@ -28,9 +22,9 @@ class MyAppButton extends StatefulWidget {
     this.onPressed,
     this.width = double.infinity,
     this.isLoading = false,
-  }) : buttonType = MyAppButtonTypeEnum.primary;
+  }) : buttonType = SummaryAppButtonTypeEnum.primary;
 
-  const MyAppButton.secondary({
+  const SummaryAppButton.secondary({
     super.key,
     this.leftWidget,
     this.leftIcon,
@@ -39,9 +33,9 @@ class MyAppButton extends StatefulWidget {
     this.onPressed,
     this.width = double.infinity,
     this.isLoading = false,
-  }) : buttonType = MyAppButtonTypeEnum.secondary;
+  }) : buttonType = SummaryAppButtonTypeEnum.secondary;
 
-  const MyAppButton.tertiary({
+  const SummaryAppButton.tertiaryFill({
     super.key,
     this.leftWidget,
     this.leftIcon,
@@ -50,9 +44,9 @@ class MyAppButton extends StatefulWidget {
     this.onPressed,
     this.width = double.infinity,
     this.isLoading = false,
-  }) : buttonType = MyAppButtonTypeEnum.tertiary;
+  }) : buttonType = SummaryAppButtonTypeEnum.tertiaryFill;
 
-  const MyAppButton.negative({
+  const SummaryAppButton.tertiaryBorder({
     super.key,
     this.leftWidget,
     this.leftIcon,
@@ -61,13 +55,24 @@ class MyAppButton extends StatefulWidget {
     this.onPressed,
     this.width = double.infinity,
     this.isLoading = false,
-  }) : buttonType = MyAppButtonTypeEnum.negative;
+  }) : buttonType = SummaryAppButtonTypeEnum.tertiaryBorder;
+
+  const SummaryAppButton.negative({
+    super.key,
+    this.leftWidget,
+    this.leftIcon,
+    this.rightIcon,
+    required this.text,
+    this.onPressed,
+    this.width = double.infinity,
+    this.isLoading = false,
+  }) : buttonType = SummaryAppButtonTypeEnum.negative;
 
   @override
-  State<MyAppButton> createState() => _MyAppButtonState();
+  State<SummaryAppButton> createState() => _SummaryAppButtonState();
 }
 
-class _MyAppButtonState extends State<MyAppButton> {
+class _SummaryAppButtonState extends State<SummaryAppButton> {
   bool _hovered = false;
 
   bool get _isDisabled => widget.onPressed == null;
@@ -75,7 +80,7 @@ class _MyAppButtonState extends State<MyAppButton> {
   /// LED glow box-shadow for primary buttons on hover.
   List<BoxShadow> get _boxShadow {
     if (_isDisabled || !_hovered) return const [];
-    if (widget.buttonType == MyAppButtonTypeEnum.primary) {
+    if (widget.buttonType == SummaryAppButtonTypeEnum.primary) {
       return [
         BoxShadow(
           color: AppColors.primary.withValues(alpha: 0.30),
@@ -96,11 +101,10 @@ class _MyAppButtonState extends State<MyAppButton> {
         ? widget.buttonType.disabledColor
         : widget.buttonType.borderColor;
 
-    // Ghost hover: increase border opacity slightly
     final Color resolvedBorder =
         (!_isDisabled &&
             _hovered &&
-            widget.buttonType == MyAppButtonTypeEnum.secondary)
+            widget.buttonType == SummaryAppButtonTypeEnum.secondary)
         ? AppColors.primary.withValues(alpha: 0.65)
         : borderColor;
 
@@ -115,7 +119,7 @@ class _MyAppButtonState extends State<MyAppButton> {
         decoration: BoxDecoration(
           color: bgColor,
           border: Border.all(color: resolvedBorder, width: 1),
-          borderRadius: BorderRadius.circular(12), // 0.25rem — standard buttons
+          borderRadius: BorderRadius.circular(12),
           boxShadow: _boxShadow,
         ),
         child: Material(
