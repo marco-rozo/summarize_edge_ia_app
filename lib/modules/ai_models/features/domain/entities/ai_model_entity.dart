@@ -7,6 +7,8 @@ class AiModelEntity extends Equatable {
   final String downloadUrl;
   final String fileName;
   final int sizeInBytes;
+  final String parameterCount;
+  final String taskType;
   final String version;
   final bool isActive;
 
@@ -17,6 +19,8 @@ class AiModelEntity extends Equatable {
     required this.downloadUrl,
     required this.fileName,
     required this.sizeInBytes,
+    required this.parameterCount,
+    required this.taskType,
     required this.version,
     this.isActive = true,
   });
@@ -29,6 +33,8 @@ class AiModelEntity extends Equatable {
     downloadUrl,
     fileName,
     sizeInBytes,
+    parameterCount,
+    taskType,
     version,
     isActive,
   ];

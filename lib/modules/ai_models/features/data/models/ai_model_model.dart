@@ -8,6 +8,8 @@ class AiModelModel extends AiModelEntity {
     required super.downloadUrl,
     required super.fileName,
     required super.sizeInBytes,
+    required super.parameterCount,
+    required super.taskType,
     required super.version,
     super.isActive = true,
   });
@@ -20,6 +22,8 @@ class AiModelModel extends AiModelEntity {
       downloadUrl: map['downloadUrl'] as String? ?? '',
       fileName: map['fileName'] as String? ?? '',
       sizeInBytes: (map['sizeInBytes'] as num?)?.toInt() ?? 0,
+      parameterCount: map['parameterCount'] as String? ?? '',
+      taskType: map['taskType'] as String? ?? '',
       version: map['version'] as String? ?? '',
       isActive: map['isActive'] as bool? ?? true,
     );
@@ -32,6 +36,8 @@ class AiModelModel extends AiModelEntity {
       'downloadUrl': downloadUrl,
       'fileName': fileName,
       'sizeInBytes': sizeInBytes,
+      'parameterCount': parameterCount,
+      'taskType': taskType,
       'version': version,
       'isActive': isActive,
     };
