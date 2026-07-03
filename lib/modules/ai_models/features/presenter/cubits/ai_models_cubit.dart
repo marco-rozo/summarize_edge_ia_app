@@ -55,7 +55,14 @@ class AiModelsCubit extends Cubit<AiModelsState> {
             );
           }
 
-          emit(AiModelsSuccess(models: uiStates));
+          final defaultActiveId = uiStates
+              .where((m) => m.isDownloaded)
+              .firstOrNull
+              ?.modelInfo
+              .id ??
+              uiStates.firstOrNull?.modelInfo.id;
+
+          emit(AiModelsSuccess(models: uiStates, activeModelId: defaultActiveId));
         } catch (e, stackTrace) {
           _logger.e('Erro ao verificar arquivos locais', error: e, stackTrace: stackTrace);
           emit(AiModelsError(
@@ -77,10 +84,11 @@ class AiModelsCubit extends Cubit<AiModelsState> {
     final index = currentList.indexWhere((item) => item.modelInfo.id == uiState.modelInfo.id);
     if (index == -1) return;
 
+    final currentState = state as AiModelsSuccess;
     // Inicia progresso em 1% (0.01) para acionar o estado visual do CircularProgressIndicator
-    final initialList = List<AiModelUIState>.from((state as AiModelsSuccess).models);
+    final initialList = List<AiModelUIState>.from(currentState.models);
     initialList[index] = uiState.copyWith(downloadProgress: 0.01);
-    emit(AiModelsSuccess(models: initialList));
+    emit(AiModelsSuccess(models: initialList, activeModelId: currentState.activeModelId));
 
     final result = await _downloadAiModelUsecase(
       url: uiState.modelInfo.downloadUrl,
@@ -97,7 +105,7 @@ class AiModelsCubit extends Cubit<AiModelsState> {
           if (idx != -1) {
             final updatedList = List<AiModelUIState>.from(currentState.models);
             updatedList[idx] = updatedList[idx].copyWith(downloadProgress: progress);
-            emit(AiModelsSuccess(models: updatedList));
+            emit(AiModelsSuccess(models: updatedList, activeModelId: currentState.activeModelId));
           }
         }
       },
@@ -114,7 +122,7 @@ class AiModelsCubit extends Cubit<AiModelsState> {
           if (idx != -1) {
             final updatedList = List<AiModelUIState>.from(currentState.models);
             updatedList[idx] = updatedList[idx].copyWith(downloadProgress: 0.0, isDownloaded: false);
-            emit(AiModelsSuccess(models: updatedList));
+            emit(AiModelsSuccess(models: updatedList, activeModelId: currentState.activeModelId));
           }
         }
       },
@@ -129,7 +137,8 @@ class AiModelsCubit extends Cubit<AiModelsState> {
               downloadProgress: 1.0,
               filePath: filePath,
             );
-            emit(AiModelsSuccess(models: updatedList));
+            final newActiveId = currentState.activeModelId ?? uiState.modelInfo.id;
+            emit(AiModelsSuccess(models: updatedList, activeModelId: newActiveId));
           }
         }
       },
@@ -147,6 +156,7 @@ class AiModelsCubit extends Cubit<AiModelsState> {
       }
 
       final currentList = (state as AiModelsSuccess).models;
+      final currentActiveId = (state as AiModelsSuccess).activeModelId;
       final updatedList = currentList.map((item) {
         if (item.modelInfo.id == uiState.modelInfo.id) {
           return item.copyWith(
@@ -158,9 +168,22 @@ class AiModelsCubit extends Cubit<AiModelsState> {
         return item;
       }).toList();
 
-      emit(AiModelsSuccess(models: updatedList));
+      final newActiveId = (currentActiveId == uiState.modelInfo.id)
+          ? updatedList.where((m) => m.isDownloaded).firstOrNull?.modelInfo.id
+          : currentActiveId;
+
+      emit(AiModelsSuccess(models: updatedList, activeModelId: newActiveId));
     } catch (e, stackTrace) {
       _logger.e('Erro ao deletar modelo', error: e, stackTrace: stackTrace);
     }
+  }
+
+  void selectModel(String modelId) {
+    if (state is! AiModelsSuccess) return;
+    final currentState = state as AiModelsSuccess;
+    emit(AiModelsSuccess(
+      models: currentState.models,
+      activeModelId: modelId,
+    ));
   }
 }

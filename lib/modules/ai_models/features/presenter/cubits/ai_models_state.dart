@@ -48,11 +48,12 @@ final class AiModelsLoading extends AiModelsState {
 
 final class AiModelsSuccess extends AiModelsState {
   final List<AiModelUIState> models;
+  final String? activeModelId;
 
-  const AiModelsSuccess({required this.models});
+  const AiModelsSuccess({required this.models, this.activeModelId});
 
   @override
-  List<Object?> get props => [models];
+  List<Object?> get props => [models, activeModelId];
 }
 
 final class AiModelsError extends AiModelsState {
