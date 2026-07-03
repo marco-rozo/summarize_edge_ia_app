@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/components/summary_app_bottom_sheet/summary_app_bottom_sheet.dart';
 import 'package:summary_app/core/theme/components/summary_app_button/summary_app_button.dart';
 import 'package:summary_app/core/theme/components/summary_app_text_button/summary_app_text_button.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
+import 'package:summary_app/modules/ai_models/features/data/models/ai_model_model.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase.dart';
 import 'package:summary_app/modules/components/core/routes/components_routes.dart';
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
@@ -19,6 +22,148 @@ class ComponentsPage extends StatefulWidget {
 
 class _ComponentsPageState extends State<ComponentsPage>
     with SummaryAppBottomSheet {
+  @override
+  void initState() {
+    super.initState();
+    popularModelosNoFirestore();
+  }
+
+  Future<void> popularModelosNoFirestore() async {
+    final firestore = FirebaseFirestore.instance;
+    final collection = firestore.collection('ai_models');
+
+    final aiModelsToRegister = [
+      // ---------------------------------------------------------
+      // MODELOS ASR (AUDIO-TO-TEXT)
+      // ---------------------------------------------------------
+      const AiModelModel(
+        id: '',
+        name: 'Whisper Base (30s)',
+        description:
+            'Modelo de transcrição acústica (ASR) padrão ouro. Extrai o texto com alta precisão a partir de áudios brutos de até 30 segundos.',
+        fileName: 'whisper_base_30s_f32.tflite',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2Fwhisper_base_30s_f32.tflite?alt=media&token=93a7bf23-1bfd-4d02-b471-7ae76011640d',
+        sizeInBytes: 290082636,
+        version: '1.0.0',
+        parameterCount: '72.6M',
+        taskType: 'audio-to-text',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Qwen 3 ASR (5s)',
+        description:
+            'Modelo acústico otimizado (Quantizado Int8). Transcreve áudio de forma extremamente veloz usando processamento em fatias de 5 segundos.',
+        fileName: 'qwen3_asr_0.6b_5s_i8.tflite',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2Fqwen3_asr_0.6b_5s_i8.tflite?alt=media&token=2d02c90e-7428-4a32-9827-d61cd959e53a',
+        sizeInBytes: 793931296,
+        version: '1.0.0',
+        parameterCount: '0.9B',
+        taskType: 'audio-to-text',
+        isActive: true,
+      ),
+
+      // ---------------------------------------------------------
+      // MODELOS LLM (TEXT-TO-TEXT)
+      // ---------------------------------------------------------
+      const AiModelModel(
+        id: '',
+        name: 'Gemma 3 (1.0B Instruct)',
+        description:
+            'Modelo avançado para estruturação de dados. Lê a transcrição e organiza as ações concluídas de forma rápida e inteligente.',
+        fileName: 'Gemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2FGemma3-1B-IT_multi-prefill-seq_q4_ekv4096.litertlm?alt=media&token=4ecc0930-cf7f-4054-8270-a546eefe8ebf',
+        sizeInBytes: 584417280,
+        version: '1.0.0',
+        parameterCount: '1.0B',
+        taskType: 'text-to-text',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Qwen 2 (0.5B Instruct)',
+        description:
+            'Modelo LLM ultraleve. Focado em consumo mínimo de bateria e respostas diretas para rotinas simples.',
+        fileName: 'Qwen2_0.5B_Instruct.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2FQwen2_0.5B_Instruct.litertlm?alt=media&token=31bdf1bf-6fef-46f2-945a-f2aeaf30797c',
+        sizeInBytes: 647377840,
+        version: '1.0.0',
+        parameterCount: '0.5B',
+        taskType: 'text-to-text',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Qwen 2.5 (1.5B Instruct)',
+        description:
+            'O motor mais capaz do catálogo. Alta capacidade de raciocínio para extrair detalhes complexos e classificar históricos textuais com extrema precisão.',
+        fileName: 'Qwen2.5-1.5B-Instruct_multi-prefill-seq_q8_ekv4096.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2FQwen2.5-1.5B-Instruct_multi-prefill-seq_q8_ekv4096.litertlm?alt=media&token=c5e61ccd-e798-436a-936b-5bd6af3edf5f',
+        sizeInBytes: 1597931520,
+        version: '1.0.0',
+        parameterCount: '2B',
+        taskType: 'text-to-text',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Qwen 3 (0.6B)',
+        description:
+            'Modelo Qwen leve com 0.6 bilhões de parâmetros, ideal para tarefas gerais de texto.',
+        fileName: 'Qwen3-0.6B.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2FQwen3-0.6B.litertlm?alt=media&token=e9a427dc-6836-4aac-8464-6a2782f74341',
+        sizeInBytes: 614236160,
+        parameterCount: '0.6B',
+        taskType: 'text-to-text',
+        version: '1.0.0',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Gemma 3 (270M Instruct)',
+        description:
+            'Modelo Gemma 3 compactado em 8-bits, focado em seguir instruções e chat.',
+        fileName: 'gemma3-270m-it-q8.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2Fgemma3-270m-it-q8.litertlm?alt=media&token=ac437d90-2728-441f-b852-c7d9c34b16b1',
+        sizeInBytes: 304005120,
+        parameterCount: '270M',
+        taskType: 'text-to-text',
+        version: '1.0.0',
+        isActive: true,
+      ),
+      const AiModelModel(
+        id: '',
+        name: 'Tiny Garden (Q8)',
+        description:
+            'Modelo ultracompacto Tiny Garden, focado em baixo consumo de memória.',
+        fileName: 'tiny_garden_q8_ekv1024.litertlm',
+        downloadUrl:
+            'https://firebasestorage.googleapis.com/v0/b/summary-ia-app.firebasestorage.app/o/models%2Ftiny_garden_q8_ekv1024.litertlm?alt=media&token=bb9922d0-1c78-46e4-8254-cbcfc396361d',
+        sizeInBytes: 288964608,
+        parameterCount: '270M',
+        taskType: 'text-to-text',
+        version: '1.0.0',
+        isActive: true,
+      ),
+    ];
+
+    final Logger logger = Logger();
+
+    for (var modelo in aiModelsToRegister) {
+      await collection.add(modelo.toMap());
+      logger.i('✅ Modelo ${modelo.name} cadastrado com sucesso!');
+    }
+
+    logger.i('🚀 Todos os modelos foram cadastrados no Firestore!');
+  }
+
   final _whiteLine = const SizedBox(height: 8);
   bool _isDownloading = false;
 
