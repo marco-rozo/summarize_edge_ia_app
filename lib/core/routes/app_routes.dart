@@ -5,7 +5,7 @@ import 'package:summary_app/modules/home/core/routes/home_routes.dart';
 import 'package:summary_app/modules/listening/core/routes/listening_routes.dart';
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
 
-final GoRouter appRouter = GoRouter(
+final GoRouter appRoutes = GoRouter(
   initialLocation: HomeRoutes.path,
   routes: [
     ...ComponentsRoutes.routes,

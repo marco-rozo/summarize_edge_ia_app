@@ -5,7 +5,7 @@ import 'package:summary_app/core/externals/permission_manager/permission_manager
 import 'package:summary_app/core/externals/permission_manager/permission_manager_impl.dart';
 import 'package:summary_app/core/externals/speech_recognizer/speech_recognizer.dart';
 import 'package:summary_app/core/externals/speech_recognizer/speech_recognizer_impl.dart';
-import 'package:summary_app/core/router/app_router.dart';
+import 'package:summary_app/core/routes/app_routes.dart';
 import 'package:summary_app/core/theme/theme.dart';
 import 'package:summary_app/modules/ai_models/core/injections/ai_models_injections.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: AppEnv.appTitle,
         theme: appTheme,
-        routerConfig: appRouter,
+        routerConfig: appRoutes,
         debugShowCheckedModeBanner: false,
       ),
     );
