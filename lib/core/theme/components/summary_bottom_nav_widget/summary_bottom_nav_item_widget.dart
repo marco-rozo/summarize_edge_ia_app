@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 
-class MobileBottomNavItemWidget extends StatelessWidget {
-  const MobileBottomNavItemWidget({
+class SummaryBottomNavItemWidget extends StatelessWidget {
+  const SummaryBottomNavItemWidget({
     super.key,
     required this.index,
     required this.icon,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:summary_app/core/theme/components/summary_bottom_nav_widget/summary_bottom_nav_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/cubits/home_cubit.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/hero_section/hero_section_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/home_background/home_background_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/home_section_header/home_page_section_header_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/home_summaries_panel/home_page_summaries_panel_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/home_view_more_button/home_page_view_more_button_widget.dart';
-import 'package:summary_app/modules/home/features/presenter/widgets/mobile_bottom_nav/mobile_bottom_nav_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            bottomNavigationBar: const MobileBottomNavWidget(),
+            bottomNavigationBar: const SummaryBottomNavWidget(),
           ),
         ),
       ],

@@ -1,19 +1,39 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
-import 'package:summary_app/modules/home/features/presenter/widgets/mobile_bottom_nav/mobile_bottom_nav_item_widget.dart';
+import 'package:summary_app/core/theme/components/summary_bottom_nav_widget/summary_bottom_nav_item_widget.dart';
 
-class MobileBottomNavWidget extends StatefulWidget {
-  const MobileBottomNavWidget({super.key, this.currentIndex = 0, this.onTap});
+class SummaryBottomNavItem {
+  const SummaryBottomNavItem({
+    required this.icon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String label;
+}
+
+class SummaryBottomNavWidget extends StatefulWidget {
+  const SummaryBottomNavWidget({
+    super.key,
+    this.currentIndex = 0,
+    this.onTap,
+    this.items = const [
+      SummaryBottomNavItem(icon: Icons.home_rounded, label: 'Home'),
+      SummaryBottomNavItem(icon: Icons.mic_rounded, label: 'New Summary'),
+      SummaryBottomNavItem(icon: Icons.settings_rounded, label: 'Settings'),
+    ],
+  });
 
   final int currentIndex;
   final ValueChanged<int>? onTap;
+  final List<SummaryBottomNavItem> items;
 
   @override
-  State<MobileBottomNavWidget> createState() => _MobileBottomNavWidgetState();
+  State<SummaryBottomNavWidget> createState() => _SummaryBottomNavWidgetState();
 }
 
-class _MobileBottomNavWidgetState extends State<MobileBottomNavWidget> {
+class _SummaryBottomNavWidgetState extends State<SummaryBottomNavWidget> {
   late int _selectedIndex;
 
   @override
@@ -23,7 +43,7 @@ class _MobileBottomNavWidgetState extends State<MobileBottomNavWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant MobileBottomNavWidget oldWidget) {
+  void didUpdateWidget(covariant SummaryBottomNavWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.currentIndex != widget.currentIndex) {
       _selectedIndex = widget.currentIndex;
@@ -59,29 +79,16 @@ class _MobileBottomNavWidgetState extends State<MobileBottomNavWidget> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  MobileBottomNavItemWidget(
-                    index: 0,
-                    icon: Icons.home_rounded,
-                    label: 'Home',
-                    isSelected: _selectedIndex == 0,
+                children: List.generate(widget.items.length, (index) {
+                  final item = widget.items[index];
+                  return SummaryBottomNavItemWidget(
+                    index: index,
+                    icon: item.icon,
+                    label: item.label,
+                    isSelected: _selectedIndex == index,
                     onTap: _handleTap,
-                  ),
-                  MobileBottomNavItemWidget(
-                    index: 1,
-                    icon: Icons.mic_rounded,
-                    label: 'New Summary',
-                    isSelected: _selectedIndex == 1,
-                    onTap: _handleTap,
-                  ),
-                  MobileBottomNavItemWidget(
-                    index: 2,
-                    icon: Icons.settings_rounded,
-                    label: 'Settings',
-                    isSelected: _selectedIndex == 2,
-                    onTap: _handleTap,
-                  ),
-                ],
+                  );
+                }),
               ),
             ),
           ),
