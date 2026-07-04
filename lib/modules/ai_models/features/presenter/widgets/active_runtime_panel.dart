@@ -2,112 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 import 'package:summary_app/modules/ai_models/features/presenter/cubits/ai_models_cubit.dart';
-import 'package:summary_app/modules/ai_models/features/presenter/widgets/active_runtime_spec_row.dart';
+import 'package:summary_app/modules/ai_models/features/presenter/widgets/active_runtime_card.dart';
 
 class ActiveRuntimePanel extends StatelessWidget {
-  final AiModelUIState? activeModel;
+  final List<AiModelUIState> activeModels;
 
-  const ActiveRuntimePanel({super.key, this.activeModel});
+  const ActiveRuntimePanel({super.key, required this.activeModels});
 
   @override
   Widget build(BuildContext context) {
-    final modelInfo = activeModel?.modelInfo;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'EXECUÇÃO ATIVA',
-          style: AppTextStyle.labelSm.copyWith(
-            color: AppColors.onSurfaceVariant,
-            letterSpacing: 1.5,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'EXECUÇÃO ATIVA',
+              style: AppTextStyle.labelSm.copyWith(
+                color: AppColors.onSurfaceVariant,
+                letterSpacing: 1.5,
+              ),
+            ),
+            if (activeModels.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  '${activeModels.length} ${activeModels.length == 1 ? "MODELO CARREGADO" : "MODELOS CARREGADOS"}',
+                  style: AppTextStyle.labelSm.copyWith(
+                    fontSize: 10,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: AppColors.surface.withValues(alpha: 0.7),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.surfaceBorder, width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.1),
-                blurRadius: 24,
-                spreadRadius: -4,
-              ),
-            ],
+        if (activeModels.isEmpty)
+          const ActiveRuntimeCard(activeModel: null)
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: activeModels.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              return ActiveRuntimeCard(activeModel: activeModels[index]);
+            },
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: activeModel != null
-                              ? AppColors.primary
-                              : AppColors.outline,
-                          boxShadow: activeModel != null
-                              ? [
-                                  BoxShadow(
-                                    color: AppColors.primary.withValues(
-                                      alpha: 0.6,
-                                    ),
-                                    blurRadius: 8,
-                                  ),
-                                ]
-                              : null,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        modelInfo?.name ?? 'Nenhum em uso',
-                        style: AppTextStyle.headlineMd.copyWith(
-                          color: AppColors.onSurface,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.bolt_rounded,
-                    color: activeModel != null
-                        ? AppColors.primary
-                        : AppColors.outline,
-                    size: 28,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              ActiveRuntimeSpecRow(
-                label: 'ARQUITETURA',
-                value: modelInfo?.formattedArchitecture ?? 'Transformer',
-              ),
-              ActiveRuntimeSpecRow(
-                label: 'PARÂMETROS',
-                value: modelInfo?.parameterCount ?? '-',
-              ),
-              ActiveRuntimeSpecRow(
-                label: 'QUANTIZAÇÃO',
-                value: modelInfo?.version != null
-                    ? 'LiteRT (${modelInfo!.version})'
-                    : 'Int8 / Q4',
-              ),
-              ActiveRuntimeSpecRow(
-                label: 'MEMÓRIA REQ.',
-                value: modelInfo?.formattedSizeInRam ?? '0.0 MB RAM',
-                isLast: true,
-              ),
-            ],
-          ),
-        ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(16),
@@ -138,7 +88,7 @@ class ActiveRuntimePanel extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Aceleração via Metal (Apple Silicon) e Android NNAPI está ativada, proporcionando a máxima velocidade de inferência offline.',
+                      'Aceleração via Metal (Apple Silicon) e Android NNAPI está ativada, proporcionando a máxima velocidade de inferência offline simultânea para texto e áudio.',
                       style: AppTextStyle.labelSm.copyWith(
                         color: AppColors.onSurfaceVariant,
                         height: 1.4,
@@ -154,6 +104,4 @@ class ActiveRuntimePanel extends StatelessWidget {
       ],
     );
   }
-
 }
-

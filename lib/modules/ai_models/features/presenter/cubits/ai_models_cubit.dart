@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:summary_app/core/errors/failure.dart';
 import 'package:summary_app/modules/ai_models/features/domain/entities/ai_model_entity.dart';
+import 'package:summary_app/modules/ai_models/features/domain/enums/ai_model_task_type_enum.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/download_ai_model_usecase.dart';
 import 'package:summary_app/modules/ai_models/features/domain/usecases/get_all_ai_models_usecase.dart';
 
@@ -55,14 +56,32 @@ class AiModelsCubit extends Cubit<AiModelsState> {
             );
           }
 
-          final defaultActiveId = uiStates
-              .where((m) => m.isDownloaded)
-              .firstOrNull
-              ?.modelInfo
-              .id ??
-              uiStates.firstOrNull?.modelInfo.id;
+          final Map<AiModelTaskTypeEnum, String> defaultActiveIds = {};
+          for (final type in AiModelTaskTypeEnum.values) {
+            final firstDownloaded = uiStates
+                .where(
+                  (m) =>
+                      m.modelInfo.taskTypeEnum == type && m.isDownloaded,
+                )
+                .firstOrNull;
+            if (firstDownloaded != null) {
+              defaultActiveIds[type] = firstDownloaded.modelInfo.id;
+            } else {
+              final firstAvailable = uiStates
+                  .where((m) => m.modelInfo.taskTypeEnum == type)
+                  .firstOrNull;
+              if (firstAvailable != null) {
+                defaultActiveIds[type] = firstAvailable.modelInfo.id;
+              }
+            }
+          }
 
-          emit(AiModelsSuccess(models: uiStates, activeModelId: defaultActiveId));
+          emit(
+            AiModelsSuccess(
+              models: uiStates,
+              activeModelIds: defaultActiveIds,
+            ),
+          );
         } catch (e, stackTrace) {
           _logger.e('Erro ao verificar arquivos locais', error: e, stackTrace: stackTrace);
           emit(AiModelsError(
@@ -88,7 +107,12 @@ class AiModelsCubit extends Cubit<AiModelsState> {
     // Inicia progresso em 1% (0.01) para acionar o estado visual do CircularProgressIndicator
     final initialList = List<AiModelUIState>.from(currentState.models);
     initialList[index] = uiState.copyWith(downloadProgress: 0.01);
-    emit(AiModelsSuccess(models: initialList, activeModelId: currentState.activeModelId));
+    emit(
+      AiModelsSuccess(
+        models: initialList,
+        activeModelIds: currentState.activeModelIds,
+      ),
+    );
 
     final result = await _downloadAiModelUsecase(
       url: uiState.modelInfo.downloadUrl,
@@ -104,8 +128,14 @@ class AiModelsCubit extends Cubit<AiModelsState> {
           final idx = currentState.models.indexWhere((item) => item.modelInfo.id == uiState.modelInfo.id);
           if (idx != -1) {
             final updatedList = List<AiModelUIState>.from(currentState.models);
-            updatedList[idx] = updatedList[idx].copyWith(downloadProgress: progress);
-            emit(AiModelsSuccess(models: updatedList, activeModelId: currentState.activeModelId));
+            updatedList[idx] =
+                updatedList[idx].copyWith(downloadProgress: progress);
+            emit(
+              AiModelsSuccess(
+                models: updatedList,
+                activeModelIds: currentState.activeModelIds,
+              ),
+            );
           }
         }
       },
@@ -121,8 +151,16 @@ class AiModelsCubit extends Cubit<AiModelsState> {
           final idx = currentState.models.indexWhere((item) => item.modelInfo.id == uiState.modelInfo.id);
           if (idx != -1) {
             final updatedList = List<AiModelUIState>.from(currentState.models);
-            updatedList[idx] = updatedList[idx].copyWith(downloadProgress: 0.0, isDownloaded: false);
-            emit(AiModelsSuccess(models: updatedList, activeModelId: currentState.activeModelId));
+            updatedList[idx] = updatedList[idx].copyWith(
+              downloadProgress: 0.0,
+              isDownloaded: false,
+            );
+            emit(
+              AiModelsSuccess(
+                models: updatedList,
+                activeModelIds: currentState.activeModelIds,
+              ),
+            );
           }
         }
       },
@@ -137,8 +175,19 @@ class AiModelsCubit extends Cubit<AiModelsState> {
               downloadProgress: 1.0,
               filePath: filePath,
             );
-            final newActiveId = currentState.activeModelId ?? uiState.modelInfo.id;
-            emit(AiModelsSuccess(models: updatedList, activeModelId: newActiveId));
+            final newActiveIds = Map<AiModelTaskTypeEnum, String>.from(
+              currentState.activeModelIds,
+            );
+            if (!newActiveIds.containsKey(uiState.modelInfo.taskTypeEnum)) {
+              newActiveIds[uiState.modelInfo.taskTypeEnum] =
+                  uiState.modelInfo.id;
+            }
+            emit(
+              AiModelsSuccess(
+                models: updatedList,
+                activeModelIds: newActiveIds,
+              ),
+            );
           }
         }
       },
@@ -156,7 +205,7 @@ class AiModelsCubit extends Cubit<AiModelsState> {
       }
 
       final currentList = (state as AiModelsSuccess).models;
-      final currentActiveId = (state as AiModelsSuccess).activeModelId;
+      final currentActiveIds = (state as AiModelsSuccess).activeModelIds;
       final updatedList = currentList.map((item) {
         if (item.modelInfo.id == uiState.modelInfo.id) {
           return item.copyWith(
@@ -168,11 +217,23 @@ class AiModelsCubit extends Cubit<AiModelsState> {
         return item;
       }).toList();
 
-      final newActiveId = (currentActiveId == uiState.modelInfo.id)
-          ? updatedList.where((m) => m.isDownloaded).firstOrNull?.modelInfo.id
-          : currentActiveId;
+      final newActiveIds =
+          Map<AiModelTaskTypeEnum, String>.from(currentActiveIds);
+      final type = uiState.modelInfo.taskTypeEnum;
+      if (newActiveIds[type] == uiState.modelInfo.id) {
+        final replacement = updatedList
+            .where((m) => m.modelInfo.taskTypeEnum == type && m.isDownloaded)
+            .firstOrNull;
+        if (replacement != null) {
+          newActiveIds[type] = replacement.modelInfo.id;
+        } else {
+          newActiveIds.remove(type);
+        }
+      }
 
-      emit(AiModelsSuccess(models: updatedList, activeModelId: newActiveId));
+      emit(
+        AiModelsSuccess(models: updatedList, activeModelIds: newActiveIds),
+      );
     } catch (e, stackTrace) {
       _logger.e('Erro ao deletar modelo', error: e, stackTrace: stackTrace);
     }
@@ -181,9 +242,21 @@ class AiModelsCubit extends Cubit<AiModelsState> {
   void selectModel(String modelId) {
     if (state is! AiModelsSuccess) return;
     final currentState = state as AiModelsSuccess;
-    emit(AiModelsSuccess(
-      models: currentState.models,
-      activeModelId: modelId,
-    ));
+    final modelToSelect = currentState.models
+        .where((m) => m.modelInfo.id == modelId)
+        .firstOrNull;
+    if (modelToSelect == null) return;
+
+    final type = modelToSelect.modelInfo.taskTypeEnum;
+    final updatedActiveIds =
+        Map<AiModelTaskTypeEnum, String>.from(currentState.activeModelIds);
+    updatedActiveIds[type] = modelId;
+
+    emit(
+      AiModelsSuccess(
+        models: currentState.models,
+        activeModelIds: updatedActiveIds,
+      ),
+    );
   }
 }

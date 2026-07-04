@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:summary_app/modules/ai_models/features/domain/enums/ai_model_task_type_enum.dart';
 
 class AiModelEntity extends Equatable {
   final String id;
@@ -45,21 +46,12 @@ class AiModelEntity extends Equatable {
     return '~${mb.toStringAsFixed(1)} MB RAM';
   }
 
-  String get formattedArchitecture {
-    if (taskType.toLowerCase().contains('audio') ||
-        taskType.toLowerCase() == 'asr') {
-      return 'ASR Acústico';
-    }
-    return 'Transformer / LLM';
-  }
+  AiModelTaskTypeEnum get taskTypeEnum =>
+      AiModelTaskTypeEnum.fromValue(taskType);
 
-  String get taskTypeLabel {
-    if (taskType.toLowerCase().contains('audio') ||
-        taskType.toLowerCase() == 'asr') {
-      return 'ASR (Reconhecimento Automático de Fala)';
-    }
-    return 'Veloz / Instrução';
-  }
+  String get formattedArchitecture => taskTypeEnum.architectureLabel;
+
+  String get taskTypeLabel => taskTypeEnum.label;
 
   @override
   List<Object?> get props => [

@@ -19,7 +19,7 @@ class AiModelsPage extends StatelessWidget {
       backgroundColor: AppColors.backgroundBase,
       extendBodyBehindAppBar: true,
       appBar: SummaryAppBar(
-        title: 'Modelos de IA Local',
+        title: 'Configurações',
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh_rounded, color: AppColors.onSurface),
@@ -78,11 +78,10 @@ class AiModelsPage extends StatelessWidget {
 
               if (state is AiModelsSuccess) {
                 final models = state.models;
-                final activeId = state.activeModelId;
-                final activeModel = models.cast<AiModelUIState?>().firstWhere(
-                  (m) => m?.modelInfo.id == activeId,
-                  orElse: () => models.firstOrNull,
-                );
+                final activeIds = state.activeModelIds.values.toSet();
+                final activeModels = models
+                    .where((m) => activeIds.contains(m.modelInfo.id))
+                    .toList();
 
                 return SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(
@@ -107,7 +106,7 @@ class AiModelsPage extends StatelessWidget {
                                     Expanded(
                                       flex: 4,
                                       child: ActiveRuntimePanel(
-                                        activeModel: activeModel,
+                                        activeModels: activeModels,
                                       ),
                                     ),
                                     const SizedBox(width: 24),
@@ -115,7 +114,7 @@ class AiModelsPage extends StatelessWidget {
                                       flex: 7,
                                       child: AvailableLibraryPanel(
                                         models: models,
-                                        activeModelId: activeId,
+                                        activeModelIds: activeIds,
                                       ),
                                     ),
                                   ],
@@ -126,12 +125,12 @@ class AiModelsPage extends StatelessWidget {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     ActiveRuntimePanel(
-                                      activeModel: activeModel,
+                                      activeModels: activeModels,
                                     ),
                                     const SizedBox(height: 32),
                                     AvailableLibraryPanel(
                                       models: models,
-                                      activeModelId: activeId,
+                                      activeModelIds: activeIds,
                                     ),
                                   ],
                                 );
@@ -152,6 +151,4 @@ class AiModelsPage extends StatelessWidget {
       ),
     );
   }
-
 }
-

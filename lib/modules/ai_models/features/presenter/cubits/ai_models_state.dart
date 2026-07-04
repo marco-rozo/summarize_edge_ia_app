@@ -48,12 +48,19 @@ final class AiModelsLoading extends AiModelsState {
 
 final class AiModelsSuccess extends AiModelsState {
   final List<AiModelUIState> models;
-  final String? activeModelId;
+  final Map<AiModelTaskTypeEnum, String> activeModelIds;
 
-  const AiModelsSuccess({required this.models, this.activeModelId});
+  const AiModelsSuccess({
+    required this.models,
+    this.activeModelIds = const {},
+  });
+
+  String? get activeModelId => activeModelIds.values.firstOrNull;
+
+  bool isModelActive(String modelId) => activeModelIds.containsValue(modelId);
 
   @override
-  List<Object?> get props => [models, activeModelId];
+  List<Object?> get props => [models, activeModelIds];
 }
 
 final class AiModelsError extends AiModelsState {

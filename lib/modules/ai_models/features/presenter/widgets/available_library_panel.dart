@@ -6,12 +6,12 @@ import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_mode
 
 class AvailableLibraryPanel extends StatelessWidget {
   final List<AiModelUIState> models;
-  final String? activeModelId;
+  final Set<String> activeModelIds;
 
   const AvailableLibraryPanel({
     super.key,
     required this.models,
-    this.activeModelId,
+    this.activeModelIds = const {},
   });
 
   @override
@@ -81,8 +81,7 @@ class AvailableLibraryPanel extends StatelessWidget {
             itemBuilder: (context, index) {
               final uiState = models[index];
               final isCurrentActive =
-                  uiState.modelInfo.id == activeModelId ||
-                  (activeModelId == null && uiState.isDownloaded && index == 0);
+                  activeModelIds.contains(uiState.modelInfo.id);
               return AiModelCard(
                 uiState: uiState,
                 isActiveRuntime: isCurrentActive && uiState.isDownloaded,
