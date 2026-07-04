@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 import 'package:summary_app/modules/ai_models/features/presenter/cubits/ai_models_cubit.dart';
-import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_main_info.dart';
-import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_status_and_actions.dart';
+import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_card/ai_model_main_info.dart';
+import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_card/ai_model_status_and_actions.dart';
 
 class AiModelCard extends StatelessWidget {
   final AiModelUIState uiState;

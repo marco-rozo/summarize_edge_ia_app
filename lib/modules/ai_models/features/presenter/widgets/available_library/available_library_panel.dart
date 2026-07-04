@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/core/theme/styles/text_styles.dart';
 import 'package:summary_app/modules/ai_models/features/presenter/cubits/ai_models_cubit.dart';
-import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_card.dart';
+import 'package:summary_app/modules/ai_models/features/presenter/widgets/ai_model_card/ai_model_card.dart';
 
 class AvailableLibraryPanel extends StatelessWidget {
   final List<AiModelUIState> models;
