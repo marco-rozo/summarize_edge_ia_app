@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:summary_app/core/theme/components/summary_bottom_nav_widget/summary_bottom_nav_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/cubits/home_cubit.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/hero_section/hero_section_widget.dart';
 import 'package:summary_app/modules/home/features/presenter/widgets/home_background/home_background_widget.dart';
@@ -76,7 +75,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            bottomNavigationBar: const SummaryBottomNavWidget(),
           ),
         ),
       ],

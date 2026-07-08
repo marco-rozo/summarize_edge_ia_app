@@ -9,7 +9,7 @@ import 'package:summary_app/modules/listening/features/presenter/pages/listening
 final class ListeningRoutes {
   static const String path = '/listening';
 
-  static List<GoRoute> get routes => [
+  static List<GoRoute> get primaryRoutes => [
     GoRoute(
       path: path,
       builder: (context, _) => BlocProvider<ListeningCubit>(
