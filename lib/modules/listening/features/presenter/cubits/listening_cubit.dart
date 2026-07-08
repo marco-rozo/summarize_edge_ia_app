@@ -17,10 +17,10 @@ class ListeningCubit extends Cubit<ListeningState> {
     required SpeechRecognizer speechRecognizer,
     required PermissionManager permissionManager,
     required Logger logger,
-  })  : _speechRecognizer = speechRecognizer,
-        _permissionManager = permissionManager,
-        _logger = logger,
-        super(const ListeningInitial());
+  }) : _speechRecognizer = speechRecognizer,
+       _permissionManager = permissionManager,
+       _logger = logger,
+       super(const ListeningInitial());
 
   void init() {
     _logger.i('init');
@@ -31,14 +31,15 @@ class ListeningCubit extends Cubit<ListeningState> {
             state is ListeningInProgress &&
             !isClosed) {
           final currentText = (state as ListeningInProgress).recognizedText;
+          _logger.i('Resultado da gravação: $currentText');
           emit(ListeningPaused(recognizedText: currentText));
         }
       },
       onError: (error) {
         _logger.e('Speech recognizer error', error: error);
         if (state is ListeningInProgress && !isClosed) {
-           final currentText = (state as ListeningInProgress).recognizedText;
-           emit(ListeningPaused(recognizedText: currentText));
+          final currentText = (state as ListeningInProgress).recognizedText;
+          emit(ListeningPaused(recognizedText: currentText));
         }
       },
     );
@@ -53,8 +54,8 @@ class ListeningCubit extends Cubit<ListeningState> {
   }
 
   Future<void> _startListening() async {
-    final permissionStatus =
-        await _permissionManager.requestMicrophonePermission();
+    final permissionStatus = await _permissionManager
+        .requestMicrophonePermission();
 
     if (permissionStatus == PermissionManagerStatusEnum.permanentlyDenied) {
       emit(const ListeningPermissionDenied(isPermanent: true));
@@ -71,10 +72,12 @@ class ListeningCubit extends Cubit<ListeningState> {
         ? (state as ListeningPaused).recognizedText
         : '';
 
-    emit(ListeningInProgress(
-      recognizedText: currentText,
-      fullPreviousText: currentText,
-    ));
+    emit(
+      ListeningInProgress(
+        recognizedText: currentText,
+        fullPreviousText: currentText,
+      ),
+    );
 
     try {
       await _speechRecognizer.startListening(
@@ -89,6 +92,8 @@ class ListeningCubit extends Cubit<ListeningState> {
                 ? recognizedText
                 : '$previousText $recognizedText'.trim();
 
+            _logger.i('Resultado da gravação: $newFullText');
+
             emit(
               ListeningInProgress(
                 recognizedText: newFullText,
@@ -100,12 +105,14 @@ class ListeningCubit extends Cubit<ListeningState> {
       );
     } catch (e, stackTrace) {
       _logger.e('Error starting listening', error: e, stackTrace: stackTrace);
-      emit(ListeningError(
-        failure: UnknownFailure(
-          errorMessage: e.toString(),
-          stackTrace: stackTrace,
+      emit(
+        ListeningError(
+          failure: UnknownFailure(
+            errorMessage: e.toString(),
+            stackTrace: stackTrace,
+          ),
         ),
-      ));
+      );
     }
   }
 
@@ -116,19 +123,29 @@ class ListeningCubit extends Cubit<ListeningState> {
 
     try {
       await _speechRecognizer.stopListening();
+      _logger.i('Resultado da gravação: $currentText');
       emit(ListeningPaused(recognizedText: currentText));
     } catch (e, stackTrace) {
       _logger.e('Error stopping listening', error: e, stackTrace: stackTrace);
-      emit(ListeningError(
-        failure: UnknownFailure(
-          errorMessage: e.toString(),
-          stackTrace: stackTrace,
+      emit(
+        ListeningError(
+          failure: UnknownFailure(
+            errorMessage: e.toString(),
+            stackTrace: stackTrace,
+          ),
         ),
-      ));
+      );
     }
   }
 
   void openSettings() => _permissionManager.openAppSettings();
 
   void reset() => emit(const ListeningInitial());
+
+  void summaryWithIaModel() {
+    final recognizedText = (state as ListeningPaused).recognizedText;
+    _logger.w(
+      'Resumir texto com IA...\n Texto a ser resumido: $recognizedText',
+    );
+  }
 }
