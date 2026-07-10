@@ -11,26 +11,9 @@ final class ListeningInitial extends ListeningState {
   const ListeningInitial();
 }
 
-final class ListeningInProgress extends ListeningState {
-  final String recognizedText;
-  final String fullPreviousText;
-
-  const ListeningInProgress({
-    required this.recognizedText,
-    this.fullPreviousText = '',
-  });
-
-  @override
-  List<Object?> get props => [recognizedText, fullPreviousText];
-}
-
-final class ListeningPaused extends ListeningState {
-  final String recognizedText;
-
-  const ListeningPaused({required this.recognizedText});
-
-  @override
-  List<Object?> get props => [recognizedText];
+/// Microphone permission granted — ready to record audio.
+final class ListeningReady extends ListeningState {
+  const ListeningReady();
 }
 
 final class ListeningPermissionDenied extends ListeningState {
@@ -40,13 +23,4 @@ final class ListeningPermissionDenied extends ListeningState {
 
   @override
   List<Object?> get props => [isPermanent];
-}
-
-final class ListeningError extends ListeningState {
-  final Failure failure;
-
-  const ListeningError({required this.failure});
-
-  @override
-  List<Object?> get props => [failure];
 }

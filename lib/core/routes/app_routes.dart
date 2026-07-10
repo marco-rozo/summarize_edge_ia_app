@@ -6,6 +6,7 @@ import 'package:summary_app/modules/components/core/routes/components_routes.dar
 import 'package:summary_app/modules/configurations/core/routes/configurations_routes.dart';
 import 'package:summary_app/modules/home/core/routes/home_routes.dart';
 import 'package:summary_app/modules/listening/core/routes/listening_routes.dart';
+import 'package:summary_app/modules/new_summary/core/routes/new_summary_routes.dart';
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
 
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -20,11 +21,12 @@ final GoRouter appRoutes = GoRouter(
       routes: [
         ...HomeRoutes.primaryRoutes,
         ...ListeningRoutes.primaryRoutes,
+        ...NewSummaryRoutes.primaryRoutes,
         ...ConfigurationsRoutes.primaryRoutes,
       ],
     ),
 
-    // Rotas fora do ShellRoute (tela cheia, sem BottomNav)1
+    // Rotas fora do ShellRoute (tela cheia, sem BottomNav)
     ...ComponentsRoutes.routes,
     ...OnboardingRoutes.routes,
     ...AiModelsRoutes.routes,
