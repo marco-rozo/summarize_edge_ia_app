@@ -22,7 +22,7 @@ android {
         applicationId = "br.com.marcorozodev.summary_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -34,6 +34,13 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    packagingOptions {
+        pickFirst("lib/x86/libc++_shared.so")
+        pickFirst("lib/x86_64/libc++_shared.so")
+        pickFirst("lib/armeabi-v7a/libc++_shared.so")
+        pickFirst("lib/arm64-v8a/libc++_shared.so")
     }
 }
 

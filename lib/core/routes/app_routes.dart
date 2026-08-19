@@ -8,6 +8,7 @@ import 'package:summary_app/modules/home/core/routes/home_routes.dart';
 import 'package:summary_app/modules/listening/core/routes/listening_routes.dart';
 import 'package:summary_app/modules/new_summary/core/routes/new_summary_routes.dart';
 import 'package:summary_app/modules/onboarding/core/routes/onboarding_routes.dart';
+import 'package:summary_app/modules/summarizer/core/routes/summarizer_routes.dart';
 
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -30,5 +31,6 @@ final GoRouter appRoutes = GoRouter(
     ...ComponentsRoutes.routes,
     ...OnboardingRoutes.routes,
     ...AiModelsRoutes.routes,
+    ...SummarizerRoutes.routes,
   ],
 );

@@ -5,6 +5,26 @@ allprojects {
     }
 }
 
+subprojects {
+    // 1. Força o Kotlin para 17 em TODOS os projetos
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
+    }
+
+    // 2. A MÁGICA AQUI: Acessa a extensão nativa do Android (AGP) em cada plugin
+    // e força o SDK 34 e o Java 17 sobrescrevendo qualquer regra nativa deles.
+    afterEvaluate {
+        val androidExt = extensions.findByName("android") as? com.android.build.gradle.BaseExtension
+        androidExt?.apply {
+            compileSdkVersion(34) // <--- ADICIONE ESTA LINHA AQUI
+            compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+            compileOptions.targetCompatibility = JavaVersion.VERSION_17
+        }
+    }
+}
+
 val newBuildDir: Directory =
     rootProject.layout.buildDirectory
         .dir("../../build")
@@ -22,3 +42,4 @@ subprojects {
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
+

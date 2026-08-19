@@ -9,15 +9,16 @@
             "cwd": "summary_app",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_dev.dart",
             "args": [
                 "-t",
                 "lib/main_dev.dart",
-                "--flavor",
-                "dev",
+                // "--flavor",
+                // "dev",
                 "--dart-define",
                 "APP_TITLE=Summary App (Dev)",
                 "--dart-define",
-                "FIREBASE_ANDROID_API_KEY=${env:FIREBASE_ANDROID_API_KEY}",
+                "FIREBASE_ANDROID_API_KEY=AIzaSyBsBBH05DTcF9r6U5NB0onMkZxwnRJaU4c",
                 "--dart-define",
                 "FIREBASE_IOS_API_KEY=${env:FIREBASE_IOS_API_KEY}"
             ]
@@ -27,6 +28,7 @@
             "cwd": "summary_app",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_prod.dart",
             "args": [
                 "-t",
                 "lib/main_prod.dart",

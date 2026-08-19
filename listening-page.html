@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Recording - Edge AI Summary</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e5e2e1",
+                        "surface-variant": "#353534",
+                        "primary-fixed": "#f0dbff",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#001f25",
+                        "tertiary": "#2fd9f4",
+                        "on-secondary-container": "#d1a1ff",
+                        "on-primary-fixed": "#2c0051",
+                        "error-container": "#93000a",
+                        "outline-variant": "#4d4354",
+                        "surface-container": "#201f1f",
+                        "surface-tint": "#ddb7ff",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-tertiary": "#00363e",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "secondary-container": "#62259b",
+                        "secondary-fixed-dim": "#ddb8ff",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#009fb4",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#62259b",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "on-primary-container": "#400071",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-secondary": "#490081",
+                        "error": "#ffb4ab",
+                        "secondary": "#ddb8ff",
+                        "primary": "#ddb7ff",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-primary": "#842bd2",
+                        "tertiary-fixed": "#a2eeff",
+                        "on-tertiary-container": "#002f36",
+                        "primary-container": "#b76dff",
+                        "surface-bright": "#3a3939",
+                        "secondary-fixed": "#f0dbff",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "on-primary": "#490080",
+                        "outline": "#988d9f",
+                        "on-surface-variant": "#cfc2d6",
+                        "on-background": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "inverse-on-surface": "#313030",
+                        "background": "#131313",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "label-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Animations */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.5);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 40px rgba(168, 85, 247, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+            }
+        }
+
+        @keyframes waveform {
+
+            0%,
+            100% {
+                transform: scaleY(0.2);
+            }
+
+            50% {
+                transform: scaleY(1);
+            }
+        }
+
+        .is-recording #record-btn {
+            animation: pulse-ring 2s infinite;
+            background-color: theme('colors.secondary-container');
+            color: theme('colors.on-secondary-container');
+            border-color: transparent;
+        }
+
+        .is-recording .wave-bar {
+            animation: waveform 1s infinite ease-in-out;
+        }
+
+        .is-recording .wave-bar:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .is-recording .wave-bar:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .is-recording .wave-bar:nth-child(4) {
+            animation-delay: 0.1s;
+        }
+
+        .is-recording .wave-bar:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        /* Glassmorphism Background Pattern */
+        .bg-tech-pattern {
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface font-body-md h-screen flex flex-col overflow-hidden bg-tech-pattern">
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b-0 md:border-b md:border-white/5 shadow-[0_0_8px_rgba(168,85,247,0.3)]">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-2xl">memory</span>
+            <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Edge AI Summary</span>
+        </div>
+        <!-- Desktop Navigation (Hidden on Mobile) -->
+        <nav class="hidden md:flex gap-6 items-center">
+            <a class="flex items-center gap-2 text-on-surface-variant hover:opacity-80 transition-opacity font-label-md text-label-md"
+                href="#">
+                <span class="material-symbols-outlined text-[18px]">home</span> Home
+            </a>
+            <a class="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity font-label-md text-label-md active:scale-95 transition-transform"
+                href="#">
+                <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">mic</span> New Summary
+            </a>
+            <a class="flex items-center gap-2 text-on-surface-variant hover:opacity-80 transition-opacity font-label-md text-label-md"
+                href="#">
+                <span class="material-symbols-outlined text-[18px]">settings</span> Settings
+            </a>
+        </nav>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center pt-16 pb-24 md:pb-0 px-margin-mobile relative">
+        <!-- Status Indicator -->
+        <div class="absolute top-24 flex flex-col items-center gap-2 transition-opacity duration-300"
+            id="status-container">
+            <div
+                class="px-4 py-1.5 rounded-full border border-white/10 bg-surface/50 backdrop-blur-md flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-surface-variant" id="status-dot"></div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase"
+                    id="status-text">Ready to Record</span>
+            </div>
+            <div class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold tracking-tight opacity-0 transition-opacity duration-300"
+                id="timer">00:00</div>
+        </div>
+        <!-- Central Recording Area -->
+        <div class="relative flex items-center justify-center w-full max-w-sm aspect-square mt-12">
+            <!-- Waveform Visualizer (Behind Button) -->
+            <div class="absolute inset-0 flex items-center justify-center gap-1.5 opacity-0 transition-opacity duration-500"
+                id="waveform">
+                <div class="wave-bar w-1.5 h-16 bg-primary rounded-full opacity-60"></div>
+                <div class="wave-bar w-1.5 h-24 bg-primary rounded-full opacity-80"></div>
+                <div class="wave-bar w-1.5 h-32 bg-primary rounded-full"></div>
+                <div class="wave-bar w-1.5 h-20 bg-primary rounded-full opacity-80"></div>
+                <div class="wave-bar w-1.5 h-12 bg-primary rounded-full opacity-60"></div>
+            </div>
+            <!-- Microphone Button -->
+            <button
+                class="relative z-10 w-32 h-32 md:w-40 md:h-40 rounded-full bg-surface border border-white/10 flex items-center justify-center text-on-surface shadow-lg hover:border-primary/50 transition-all duration-300 group outline-none focus:ring-2 focus:ring-primary/50"
+                id="record-btn">
+                <span class="material-symbols-outlined text-4xl md:text-5xl group-hover:text-primary transition-colors"
+                    id="mic-icon">mic</span>
+            </button>
+        </div>
+        <!-- Action Button (Hidden initially) -->
+        <div class="absolute bottom-32 md:bottom-24 w-full flex justify-center px-6 opacity-0 translate-y-4 transition-all duration-500 pointer-events-none"
+            id="action-container">
+            <button
+                class="w-full max-w-sm bg-primary text-on-primary-container font-label-md text-label-md py-4 rounded-xl font-bold shadow-[0_0_16px_rgba(168,85,247,0.2)] hover:shadow-[0_0_24px_rgba(168,85,247,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+                Resumir com IA
+            </button>
+        </div>
+    </main>
+    <!-- BottomNavBar (Mobile Only) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface-container-low/70 dark:bg-surface-container-low/70 backdrop-blur-xl border-t-0 shadow-[0_-4px_24px_rgba(0,0,0,0.5)] rounded-t-xl">
+        <button
+            class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors active:scale-90 transition-all duration-200">
+            <span class="material-symbols-outlined mb-1">home</span>
+            <span class="font-label-sm text-label-sm">Home</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 shadow-[0_0_12px_rgba(168,85,247,0.4)] hover:text-primary transition-colors active:scale-90 transition-all duration-200">
+            <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">mic</span>
+            <span class="font-label-sm text-label-sm">New Summary</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors active:scale-90 transition-all duration-200">
+            <span class="material-symbols-outlined mb-1">settings</span>
+            <span class="font-label-sm text-label-sm">Settings</span>
+        </button>
+    </nav>
+    <!-- Interaction Logic -->
+    <script>
+        const recordBtn = document.getElementById('record-btn');
+        const main = document.querySelector('main');
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
+        const timer = document.getElementById('timer');
+        const waveform = document.getElementById('waveform');
+        const actionContainer = document.getElementById('action-container');
+        const micIcon = document.getElementById('mic-icon');
+
+        let isRecording = false;
+        let hasRecorded = false;
+        let timerInterval;
+        let seconds = 0;
+
+        function updateTimer() {
+            seconds++;
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            timer.innerText = `${mins}:${secs}`;
+        }
+
+        recordBtn.addEventListener('click', () => {
+            isRecording = !isRecording;
+
+            if (isRecording) {
+                // Start Recording State
+                main.classList.add('is-recording');
+                statusText.innerText = 'Recording Audio...';
+                statusText.classList.add('text-primary');
+                statusDot.classList.replace('bg-surface-variant', 'bg-primary');
+                statusDot.classList.add('animate-pulse');
+
+                timer.classList.remove('opacity-0');
+                waveform.classList.remove('opacity-0');
+
+                // Hide action button if it was showing
+                actionContainer.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                actionContainer.classList.remove('translate-y-0', 'pointer-events-auto');
+
+                seconds = 0;
+                timer.innerText = '00:00';
+                timerInterval = setInterval(updateTimer, 1000);
+            } else {
+                // Stop Recording State
+                main.classList.remove('is-recording');
+                statusText.innerText = 'Audio Captured';
+                statusText.classList.remove('text-primary');
+                statusText.classList.add('text-tertiary');
+                statusDot.classList.replace('bg-primary', 'bg-tertiary');
+                statusDot.classList.remove('animate-pulse');
+
+                waveform.classList.add('opacity-0');
+                clearInterval(timerInterval);
+
+                // Show action button
+                actionContainer.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                actionContainer.classList.add('translate-y-0', 'pointer-events-auto');
+                hasRecorded = true;
+            }
+        });
+    </script>
+</body>
+
+</html>

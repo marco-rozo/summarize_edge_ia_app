@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:summary_app/core/theme/assets/app_colors.dart';
 import 'package:summary_app/modules/listening/features/presenter/cubits/audio_record_cubit.dart';
 import 'package:summary_app/modules/listening/features/presenter/cubits/listening_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:summary_app/modules/listening/features/presenter/widgets/listeni
 import 'package:summary_app/modules/listening/features/presenter/widgets/listening_body/listening_body_widget.dart';
 import 'package:summary_app/modules/listening/features/presenter/widgets/permission_denied_dialog/permission_denied_dialog_widget.dart';
 import 'package:summary_app/modules/listening/features/presenter/widgets/status/status_indicator_widget.dart';
+import 'package:summary_app/modules/summarizer/core/routes/summarizer_routes.dart';
 
 class ListeningPage extends StatefulWidget {
   const ListeningPage({super.key});
@@ -191,7 +193,9 @@ class _ListeningPageState extends State<ListeningPage>
     } else if (audioState is AudioRecordPaused) {
       audioPath = audioState.filePath;
     }
-    _listeningCubit.summaryWithIaModel(audioPath);
+    if (audioPath != null && audioPath.isNotEmpty) {
+      context.push(SummarizerRoutes.path, extra: audioPath);
+    }
   }
 
   void _showPermissionDeniedDialog(BuildContext context, bool isPermanent) {

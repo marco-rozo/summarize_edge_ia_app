@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:summary_app/modules/ai_models/core/routes/ai_models_routes.dart';
+import 'package:summary_app/modules/components/core/routes/components_routes.dart';
 import 'package:summary_app/modules/configurations/features/presenter/widgets/configurations_item/configurations_item_widget.dart';
 import 'package:summary_app/modules/configurations/features/presenter/widgets/configurations_version_footer/configurations_version_footer_widget.dart';
 
@@ -24,6 +25,12 @@ class ConfigurationsBodyWidget extends StatelessWidget {
         title: 'Gerenciar modelos de IA disponível',
         subtitle: 'Baixe, atualize ou remova modelos de IA',
         onTap: () => context.push(AiModelsRoutes.path),
+      ),
+      ConfigurationItemEntity(
+        icon: Icons.card_giftcard,
+        title: 'Página de componentes do sistema',
+        subtitle: 'Visualize e teste os componentens',
+        onTap: () => context.push(ComponentsRoutes.path),
       ),
     ];
 
